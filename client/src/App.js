@@ -1,77 +1,31 @@
-import React, {useState, useEffect} from 'react'
-import axios from 'axios';
+import React from 'react'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import NavigationBar from './NavigationBar';
+import Home from './components/Home';
+import About from './components/About';
+import Stuff from './components/Stuff';
+import Comment from './components/Comment';
+import Location from './components/Location';
 
 const App = function () {
-	const [locations, setLocations] = useState(null);
-
-	const [locationName, setLocationName] = useState("");
-	const [reason, setReason] = useState("");
-	useEffect(() => {
-		axios
-			.get("/api/locations")
-			.then((response) => {setLocations(response.data)
-      console.log(response.data)
-      })
-			.catch((err) => console.log(err));
-	}, []);
-
-	function submitForm(e) {
-    e.preventDefault();
-		if (locationName === "") {
-			alert("Please fill the location name field");
-			return;
-		}
-		if (reason === "") {
-			alert("Please fill the reason field");
-			return;
-		}
-		axios
-			.post("/api/locations", {
-				name: locationName,
-				reason: reason,
-			})
-			.then(function () {
-				alert("Location created successfully");
-			})
-			.catch(function () {
-				alert("Could not create location. Please try again");
-			});
-	}
-
-  function displayLocations() { 
-    if (locations.length === 0) {
-      return <p>Suggest locations now!</p>
-    } else {
-      return locations.map((l, i) => (
-        <ul>
-          <li>Name: {l.name}</li>
-          <li>Reason: {l.reason}</li>
-        </ul>
-      ))
-    }
-  }
-
 	return (
-		<>
-			<h1>Wonderful locations to explore</h1>
-			{locations === null ? (
-				<p>Loading...</p>
-			) : displayLocations()}
-
-			<form onSubmit={submitForm}>
-				<input
-					onChange={(e) => setLocationName(e.target.value)}
-					type="text"
-					placeholder="Enter location name"
-				/>
-				<input
-					onChange={(e) => setReason(e.target.value)}
-					type="text"
-					placeholder="Why you think its good place for vacation?"
-				/>
-				<input type="submit" />
-			</form>
-		</>
-	);
+		<div>
+			<NavigationBar />
+			<Router>
+				<Switch>
+					<Route exact path="/" component={Home}/>
+					<Route path="/about" component={About}/>
+					<Route path="/stuff" component={Stuff} />
+					<Route path="/locations" component={Location} />
+					<Route path="/comments" component={Comment} />
+				</Switch>
+			</Router>
+		</div>
+	)
 };
+
 export default App;
