@@ -31,10 +31,10 @@ app.use(cors());
 app.use('/api/locations', locationRoute);
 
 // to deliver static files from react built project
-// app.use(express.static(path.join(__dirname, '../build')))
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../build'))
-// })
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+app.get("*", function (request, response) {
+  response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 app.get('/', function (req, res) {
   res.send('Hello World')
