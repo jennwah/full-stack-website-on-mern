@@ -15,7 +15,8 @@ const App = function () {
 			.catch((err) => console.log(err));
 	}, []);
 
-	function submitForm() {
+	function submitForm(e) {
+    e.preventDefault();
 		if (locationName === "") {
 			alert("Please fill the location name field");
 			return;
@@ -31,7 +32,6 @@ const App = function () {
 			})
 			.then(function () {
 				alert("Location created successfully");
-				window.location.reload();
 			})
 			.catch(function () {
 				alert("Could not create location. Please try again");
